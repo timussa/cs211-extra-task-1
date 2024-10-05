@@ -144,7 +144,16 @@ int get_seconds(int seconds) {
 
 double time_to_utc(int utc_offset, double time)
 {
-    return 0;
+    double utc_time = time - utc_offset;
+
+    if (utc_time < 0) {
+        utc_time += 24; 
+    }
+    else if (utc_time >= 24) {
+        utc_time -= 24; 
+    }
+
+    return utc_time;
     /*
         Return time at UTC+0, where utc_offset is the number of hours away from
         UTC+0.
@@ -239,6 +248,15 @@ void main()
     assert(get_hours(3800) == 1);
     assert(get_minutes(3800) == 3);
     assert(get_seconds(3800) == 20);
+
+
+    //Tests for time_to_uts
+    assert(fabs(time_to_utc(+0, 12.0) - 12.0) < DBL_EPSILON);
+    assert(fabs(time_to_utc(+1, 12.0) - 11.0) < DBL_EPSILON);
+    assert(fabs(time_to_utc(-1, 12.0) - 13.0) < DBL_EPSILON);
+    assert(fabs(time_to_utc(-11, 18.0) - 5.0) < DBL_EPSILON);
+    assert(fabs(time_to_utc(-1, 0.0) - 1.0) < DBL_EPSILON);
+    assert(fabs(time_to_utc(-1, 23.0) - 0.0) < DBL_EPSILON);
 
     system("pause");
 }
