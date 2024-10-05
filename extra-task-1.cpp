@@ -51,7 +51,8 @@ double hours_difference(double time_1, double time_2)
 
 double to_float_hours(int hours, int minutes, int seconds)
 {
-    return 0;
+    assert((minutes < 60) && (minutes >= 0) && (seconds >= 0) && (seconds < 60) && (hours >= 0));
+    return hours + minutes / 60.0 + seconds / 3600.0;
     /*
         Return the total number of hours in the specified number
         of hours, minutes, and seconds.
@@ -192,12 +193,19 @@ void main()
     assert(fabs(seconds_difference(1800.0, 1800.0)) < DBL_EPSILON);
 
 
-    //Test for hours_difference()
+    //Tests for hours_difference()
     assert(fabs(hours_difference(1800.0, 3600.0) - 0.5) < DBL_EPSILON);
     assert(fabs(hours_difference(3600.0, 1800.0) + 0.5) < DBL_EPSILON);
     assert(fabs(hours_difference(1800.0, 2160.0) - 0.1) < DBL_EPSILON);
     assert(fabs(hours_difference(1800.0, 1800.0)) < DBL_EPSILON);
+    
 
-   
+    //Tests for to_float_hours()
+    assert(fabs(to_float_hours(0, 15, 0) - 0.25) < DBL_EPSILON);
+    assert(fabs(to_float_hours(2, 45, 9) - 2.7525) < DBL_EPSILON);
+    assert(fabs(to_float_hours(1, 0, 36) - 1.01) < DBL_EPSILON);
+
+
+
     system("pause");
 }
